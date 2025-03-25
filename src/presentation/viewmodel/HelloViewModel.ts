@@ -1,8 +1,9 @@
 import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
 import { inject, injectable } from "inversify";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { HelloUiState } from "../uistate/HelloUiState";
 import { GET_HELLO_USE_CASE_ID } from "../../di/HelloContainerKey";
+import { cloneClass } from "../../utils/CloneClass";
 
 @injectable()
 export class HelloViewModel {
@@ -13,18 +14,28 @@ export class HelloViewModel {
     );
     public readonly uiState: Observable<HelloUiState> = this._uiState.asObservable();
 
+    private subscription: Subscription | null = null
+
     constructor(
         @inject(GET_HELLO_USE_CASE_ID) private useCase: GetHelloUseCase
     ) { }
 
     async onButtonClicked() {
-        const uiState = this._uiState.getValue();
+        const uiState = cloneClass(this._uiState.getValue());
 
-        this.useCase.invoke().subscribe((data) => {
-            this._uiState.next(uiState.copy({
-                title:  data
-            }));
+        this.subscription?.unsubscribe()
+
+        this. subscription = this.useCase.invoke().subscribe((data) => {
+            
+            uiState.title = data
+            this._uiState.next(uiState)
         })
+    }
+
+    dispose() {
+        console.log("Dispose HelloViewModel")
+        this.subscription?.unsubscribe()
+        this.subscription = null
     }
 }
 

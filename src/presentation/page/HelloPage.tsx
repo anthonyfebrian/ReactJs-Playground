@@ -18,7 +18,10 @@ function HelloPage(
             setUiState(uiState)
         });
 
-        return () => subs.unsubscribe()
+        return () => {
+            subs.unsubscribe()
+            vm.dispose()
+        }
     }, [vm]);
 
     return (
