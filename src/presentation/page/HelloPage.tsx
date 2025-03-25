@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import MyButton from "../../MyButton";
 import { HelloUiState } from "../uistate/HelloUiState";
 import { HelloViewModel } from "../viewmodel/HelloViewModel";
+import { helloContainer } from "../../di/HelloContainer";
 
-const vm: HelloViewModel = new HelloViewModel();
+const vm = helloContainer.get(HelloViewModel);
 
-function HelloPage(
-) {
-    
+function HelloPage() {
+
     const [uiState, setUiState] = useState<HelloUiState>(new HelloUiState());
 
     useEffect(() => {

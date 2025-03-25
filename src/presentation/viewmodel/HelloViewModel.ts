@@ -1,6 +1,8 @@
 import { BehaviorSubject, Observable } from "rxjs";
 import { HelloUiState } from "../uistate/HelloUiState";
+import { injectable } from "inversify";
 
+@injectable()
 export class HelloViewModel {
     private _uiState = new BehaviorSubject(
         new HelloUiState(
@@ -17,7 +19,7 @@ export class HelloViewModel {
         const uiState = this._uiState.getValue();
 
         this._uiState.next(uiState.copy({
-            title: "Button clicked",
+            title: "Button clicked git",
         }));
 
         console.log("Button clicked");
