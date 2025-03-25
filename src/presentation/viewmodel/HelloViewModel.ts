@@ -1,6 +1,7 @@
+import { inject, injectable } from "inversify";
 import { BehaviorSubject, Observable } from "rxjs";
+import { HelloDataSource } from "../../data/remote/datasource/HelloDataSource";
 import { HelloUiState } from "../uistate/HelloUiState";
-import { injectable } from "inversify";
 
 @injectable()
 export class HelloViewModel {
@@ -11,15 +12,15 @@ export class HelloViewModel {
     );
     public readonly uiState: Observable<HelloUiState> = this._uiState.asObservable();
 
-    constructor() {
-        console.log("HelloViewModel created");
-    }
+    constructor(
+        @inject('HelloDataSource') private dataSource: HelloDataSource,
+    ) { }
 
-    onButtonClicked() {
+    async onButtonClicked() {
         const uiState = this._uiState.getValue();
 
         this._uiState.next(uiState.copy({
-            title: "Button clicked git",
+            title: await this.dataSource.getHello()
         }));
 
         console.log("Button clicked");
