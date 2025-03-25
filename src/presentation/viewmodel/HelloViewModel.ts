@@ -1,7 +1,8 @@
-import { GetHelloUseCase } from "@/domain/usecase/GetHelloUseCase";
+import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
 import { inject, injectable } from "inversify";
 import { BehaviorSubject, Observable } from "rxjs";
 import { HelloUiState } from "../uistate/HelloUiState";
+import { GET_HELLO_USE_CASE_ID } from "../../di/HelloContainerKey";
 
 @injectable()
 export class HelloViewModel {
@@ -13,7 +14,7 @@ export class HelloViewModel {
     public readonly uiState: Observable<HelloUiState> = this._uiState.asObservable();
 
     constructor(
-        @inject('GetHelloUseCase') private useCase: GetHelloUseCase
+        @inject(GET_HELLO_USE_CASE_ID) private useCase: GetHelloUseCase
     ) { }
 
     async onButtonClicked() {

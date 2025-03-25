@@ -1,12 +1,13 @@
-import { HelloRepository } from "@/domain/repository/HelloRepository";
+import { HelloRepository } from "../../domain/repository/HelloRepository";
 import { inject } from "inversify";
 import { from, map, Observable } from "rxjs";
 import { HelloDataSource } from "../remote/datasource/HelloDataSource";
+import { HELLO_DATA_SOURCE_ID } from "../../di/HelloContainerKey";
 
 export class HelloRepositoryImpl implements HelloRepository {
 
     constructor(
-        @inject('HelloDataSource') private dataSource: HelloDataSource,
+        @inject(HELLO_DATA_SOURCE_ID) private dataSource: HelloDataSource,
     ) {}
     
     getHello(): Observable<string> {
