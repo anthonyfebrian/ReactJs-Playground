@@ -4,10 +4,12 @@ import { HelloUiState } from "../uistate/HelloUiState";
 import { HelloViewModel } from "../viewmodel/HelloViewModel";
 import { helloContainer } from "../../di/HelloContainer";
 
-const vm = helloContainer.get(HelloViewModel);
-
-function HelloPage() {
-
+function HelloPage(
+    {
+        viewModel = helloContainer.get(HelloViewModel)
+    }: HelloPageProps
+) {
+    const [vm] = useState(viewModel);
     const [uiState, setUiState] = useState<HelloUiState>(new HelloUiState());
 
     useEffect(() => {
@@ -28,6 +30,10 @@ function HelloPage() {
         </div>
 
     )
+}
+
+interface HelloPageProps {
+    viewModel: HelloViewModel
 }
 
 export default HelloPage;
