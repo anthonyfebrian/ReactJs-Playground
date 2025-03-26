@@ -1,9 +1,9 @@
-import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
 import { inject, injectable } from "inversify";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { HelloUiState } from "../uistate/HelloUiState";
-import { GET_HELLO_USE_CASE_ID } from "../../di/HelloContainerKey";
+import { HelloContainerKey } from "../../di/HelloContainerKey";
+import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
 import { cloneClass } from "../../utils/CloneClass";
+import { HelloUiState } from "../uistate/HelloUiState";
 
 @injectable()
 export class HelloViewModel {
@@ -17,7 +17,7 @@ export class HelloViewModel {
     private subscription: Subscription | null = null
 
     constructor(
-        @inject(GET_HELLO_USE_CASE_ID) private useCase: GetHelloUseCase
+        @inject(HelloContainerKey.GET_HELLO_USE_CASE_ID) private useCase: GetHelloUseCase
     ) { }
 
     async onButtonClicked() {

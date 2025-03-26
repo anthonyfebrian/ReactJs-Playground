@@ -9,7 +9,7 @@ import { GetDetailUseCaseImpl } from "../domain/usecase/implementation/GetDetail
 import { GetHelloUseCaseImpl } from "../domain/usecase/implementation/GetHelloUseCaseImpl";
 import DetailViewModel from "../presentation/viewmodel/DetailViewModel";
 import { HelloViewModel } from "../presentation/viewmodel/HelloViewModel";
-import { GET_DETAIL_USE_CASE_ID, GET_HELLO_USE_CASE_ID, HELLO_DATA_SOURCE_ID, HELLO_REPOSITORY_ID } from "./HelloContainerKey";
+import { HelloContainerKey } from "./HelloContainerKey";
 
 
 
@@ -18,7 +18,7 @@ const helloContainer = new Container()
 /**
  * Data
  */
-helloContainer.bind<HelloDataSource>(HELLO_DATA_SOURCE_ID)
+helloContainer.bind<HelloDataSource>(HelloContainerKey.HELLO_DATA_SOURCE_ID)
     .to(HelloDataSourceImpl)
     .inSingletonScope()
 
@@ -26,14 +26,14 @@ helloContainer.bind<HelloDataSource>(HELLO_DATA_SOURCE_ID)
  * Domain
  */
 
-helloContainer.bind<HelloRepository>(HELLO_REPOSITORY_ID)
+helloContainer.bind<HelloRepository>(HelloContainerKey.HELLO_REPOSITORY_ID)
     .to(HelloRepositoryImpl)
     .inSingletonScope()
 
-helloContainer.bind<GetHelloUseCase>(GET_HELLO_USE_CASE_ID)
+helloContainer.bind<GetHelloUseCase>(HelloContainerKey.GET_HELLO_USE_CASE_ID)
     .to(GetHelloUseCaseImpl)
 
-helloContainer.bind<GetDetailUseCase>(GET_DETAIL_USE_CASE_ID)
+helloContainer.bind<GetDetailUseCase>(HelloContainerKey.GET_DETAIL_USE_CASE_ID)
     .to(GetDetailUseCaseImpl)
 
 
@@ -44,7 +44,7 @@ helloContainer.bind<GetDetailUseCase>(GET_DETAIL_USE_CASE_ID)
 helloContainer.bind<HelloViewModel>(HelloViewModel).toSelf()
 helloContainer.bind<Factory<DetailViewModel>>(DetailViewModel).toFactory((context) => {
     return (id: number) => {
-        const useCase = context.get<GetDetailUseCase>(GET_DETAIL_USE_CASE_ID)
+        const useCase = context.get<GetDetailUseCase>(HelloContainerKey.GET_DETAIL_USE_CASE_ID)
         return new DetailViewModel(id, useCase);
     };
 });
