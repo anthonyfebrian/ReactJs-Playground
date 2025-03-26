@@ -1,10 +1,4 @@
-import React from "react";
 
-interface MyButtonProps {
-    text: string;
-    disabled: boolean;
-
-}
 export default function MyButton({text, disabled = false, onClick}: MyButtonProps) {
     return(
         <button disabled={disabled} onClick={onClick}>{text}</button>
@@ -13,6 +7,6 @@ export default function MyButton({text, disabled = false, onClick}: MyButtonProp
 
 interface MyButtonProps {
     text: string;
-    disabled: boolean;
+    disabled?: boolean;
     onClick: () => void;
 }
