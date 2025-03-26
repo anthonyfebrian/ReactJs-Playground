@@ -1,6 +1,6 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import HelloPage from './presentation/page/HelloPage';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (

@@ -36,7 +36,7 @@ function HelloPage(
 }
 
 interface HelloPageProps {
-    viewModel: HelloViewModel
+    viewModel?: HelloViewModel
 }
 
 export default HelloPage;
