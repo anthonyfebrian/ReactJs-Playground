@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { HelloContainerKey } from "../../di/HelloContainerKey";
 import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
 import { HelloUiState } from "../uistate/HelloUiState";
+import { ResultSuccess } from "../../core/data/Result";
 
 @injectable()
 export class HelloViewModel {
@@ -22,11 +23,15 @@ export class HelloViewModel {
     async onButtonClicked() {
         this.subscription?.unsubscribe()
 
-        this. subscription = this.useCase.invoke().subscribe((data) => {
-            this._uiState.next({
-                ... this._uiState.getValue(),
-                title: data
-            })
+        this. subscription = this.useCase.invoke().subscribe((result) => {
+            console.log("HelloViewModel", result)
+
+            if(result instanceof ResultSuccess) {
+                this._uiState.next({
+                    ... this._uiState.getValue(),
+                    title: result.data
+                })    
+            }
         })
     }
 

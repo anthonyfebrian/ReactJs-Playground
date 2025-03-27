@@ -1,5 +1,6 @@
+import { Result } from "../../core/data/Result";
 import { Observable } from "rxjs";
 
 export interface GetHelloUseCase {
-    invoke(): Observable<string>
+    invoke(): Observable<Result<string>>
 }
