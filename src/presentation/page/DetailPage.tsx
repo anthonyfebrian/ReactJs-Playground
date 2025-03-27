@@ -1,9 +1,9 @@
-import { helloContainer } from "../../di/HelloContainer";
 import { Factory } from "inversify";
-import { useParams } from "react-router-dom";
-import DetailViewModel from "../viewmodel/DetailViewModel";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { helloContainer } from "../../di/HelloContainer";
 import { DetailUiState } from "../uistate/DetailUiState";
+import DetailViewModel from "../viewmodel/DetailViewModel";
 
 
 function DetailPage({
@@ -21,7 +21,6 @@ function DetailPage({
     //
     useEffect(() => {
         const subs = vm.uiState.subscribe((uiState) => {
-            console.log("Changes in DetailPage", uiState)
             setUiState(uiState)
         });
 

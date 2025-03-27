@@ -1,6 +1,7 @@
-import { GetDetailUseCase } from "@/domain/usecase/GetDetailUseCase";
 import { injectable } from "inversify";
+import { create } from "mutative";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
+import { GetDetailUseCase } from "../../domain/usecase/GetDetailUseCase";
 import { DetailUiState } from "../uistate/DetailUiState";
 
 @injectable()
@@ -21,30 +22,28 @@ class DetailViewModel {
     }
 
     async getDetail() {
-        console.log("getDetail")
         const uiState = {
             ...this._uiState.getValue(),
         }
-        
+
 
         this.subscription?.unsubscribe()
 
         this.subscription = this.useCase.invoke(uiState.id).subscribe((data) => {
-            this._uiState.next(
-                {
-                    ...this._uiState.getValue(),
-                    title: data
-                }
-            )
+            const newUiState = create(uiState, (draft) => {
+                draft.title = data
+            }, { mark: () => 'immutable' })
+            this._uiState.next(newUiState)
         })
     }
 
     onInputChanged(input: string) {
-        const uiState = {
-            ...this._uiState.getValue(),
-            input: input
-        }
-        this._uiState.next(uiState)
+        const uiState: DetailUiState = this._uiState.getValue()
+        const newUiState = create(uiState, (draft) => {
+            draft.input = input
+        }, { mark: () => 'immutable' })
+
+        this._uiState.next(newUiState)
     }
 
     dispose() {
