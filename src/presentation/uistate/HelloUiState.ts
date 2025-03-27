@@ -1,6 +1,10 @@
 
-export class HelloUiState {
-    constructor(
-        public title: string = "Hello Page from uistate .tsx",
-    ) { }
+abstract class HelloUiState { }
+
+class HelloUiStateLoading extends HelloUiState { }
+
+class HelloUiStateSuccess extends HelloUiState {
+    constructor(public title: string) { super() }
 }
+
+export { HelloUiState , HelloUiStateLoading, HelloUiStateSuccess}

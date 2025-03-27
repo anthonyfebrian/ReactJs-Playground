@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { helloContainer } from "../../di/HelloContainer";
 import MyButton from "../../MyButton";
-import { HelloUiState } from "../uistate/HelloUiState";
+import { HelloUiState, HelloUiStateLoading, HelloUiStateSuccess } from "../uistate/HelloUiState";
 import { HelloViewModel } from "../viewmodel/HelloViewModel";
 
-function HelloPage(
-    {
-        viewModel = helloContainer.get(HelloViewModel),
-        navToDetail,
-    }: HelloPageProps
-) {
+interface HelloPageProps {
+    viewModel?: HelloViewModel,
+    navToDetail: (id: number) => void,
+}
+
+function HelloPage({
+    viewModel = helloContainer.get(HelloViewModel),
+    navToDetail,
+}: HelloPageProps) {
     const [vm] = useState(viewModel);
-    const [uiState, setUiState] = useState<HelloUiState>(new HelloUiState());
+    const [uiState, setUiState] = useState<HelloUiState | null>(null);
 
     useEffect(() => {
         const subs = vm.uiState.subscribe((uiState) => {
@@ -25,31 +28,76 @@ function HelloPage(
         }
     }, [vm]);
 
+    if (uiState == null) {
+        return (<div>
+            <h1>Null</h1>
+        </div>)
+    }
+
+    return (
+        <HelloContent
+            uiState={uiState}
+            onClik={() => vm.onButtonClicked()}
+            onClickNav={navToDetail} />
+    )
+
+
+
+}
+
+interface HelloContentProps {
+    uiState: HelloUiState
+    onClik: () => void
+    onClickNav: (id: number) => void
+}
+
+function HelloContent({
+    uiState,
+    onClik,
+    onClickNav
+}: HelloContentProps) {
+
+    if (uiState instanceof HelloUiStateLoading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div>
+            <HelloSuccess
+                uiState={uiState as HelloUiStateSuccess}
+                onClik={onClik}
+                onClickNav={onClickNav} />
+        </div>
+    )
+}
+
+function HelloSuccess({
+    uiState,
+    onClik,
+    onClickNav,
+}: HelloSuccessProps) {
     return (
         <div>
             <h1>{uiState.title}</h1>
             <MyButton
                 text="oke"
                 disabled={false}
-                onClick={function (): void {
-                    vm.onButtonClicked()
-                }}
+                onClick={onClik}
             />
 
             <MyButton
                 text="Nav to detail"
                 onClick={function (): void {
-                    navToDetail(13579)
+                    onClickNav(1234)
                 }}
             />
         </div>
-
     )
 }
-
-interface HelloPageProps {
-    viewModel?: HelloViewModel,
-    navToDetail: (id: number) => void,
+interface HelloSuccessProps {
+    uiState: HelloUiStateSuccess
+    onClik: () => void
+    onClickNav: (id: number) => void
 }
 
 export default HelloPage;

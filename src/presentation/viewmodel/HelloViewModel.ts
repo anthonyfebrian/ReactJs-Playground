@@ -2,13 +2,13 @@ import { inject, injectable } from "inversify";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { HelloContainerKey } from "../../di/HelloContainerKey";
 import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
-import { HelloUiState } from "../uistate/HelloUiState";
-import { ResultSuccess } from "../../core/data/Result";
+import { HelloUiState, HelloUiStateLoading, HelloUiStateSuccess } from "../uistate/HelloUiState";
+import { ResultLoading, ResultSuccess } from "../../core/data/Result";
 
 @injectable()
 export class HelloViewModel {
-    private _uiState = new BehaviorSubject(
-        new HelloUiState(
+    private _uiState = new BehaviorSubject<HelloUiState>(
+        new HelloUiStateSuccess(
             "Hello Page viewmodel.tsx"
         )
     );
@@ -26,11 +26,12 @@ export class HelloViewModel {
         this. subscription = this.useCase.invoke().subscribe((result) => {
             console.log("HelloViewModel", result)
 
+            if(result instanceof ResultLoading) {
+                this._uiState.next(new HelloUiStateLoading())
+            }
+
             if(result instanceof ResultSuccess) {
-                this._uiState.next({
-                    ... this._uiState.getValue(),
-                    title: result.data
-                })    
+                this._uiState.next(new HelloUiStateSuccess(result.data))    
             }
         })
     }

@@ -1,9 +1,9 @@
 import { inject } from "inversify";
-import { map, Observable } from "rxjs";
+import { Observable } from "rxjs";
+import { Result } from "../../../core/data/Result";
 import { HelloContainerKey } from "../../../di/HelloContainerKey";
 import { HelloRepository } from "../../../domain/repository/HelloRepository";
 import { GetHelloUseCase } from "../GetHelloUseCase";
-import { Result, ResultSuccess } from "../../../core/data/Result";
 
 export class GetHelloUseCaseImpl implements GetHelloUseCase {
     constructor(
