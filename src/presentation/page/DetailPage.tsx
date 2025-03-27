@@ -31,7 +31,24 @@ function DetailPage({
         }
     }, [vm]);
 
-    return (<h1>Detail Page {uiState.title}</h1>)
+    // useEffect(() => {
+    //     vm.getDetail()
+    //     return () => { }
+    // }, [])
+
+    return (
+        <div>
+            <h1>{uiState.title}</h1>
+            <input
+                type="text"
+                onChange={(e) => {
+                    const input = e.target.value
+                    vm.onInputChanged(input)
+                }}></input>
+            <h2>{uiState.input}</h2>
+        </div>
+
+    )
 }
 
 interface DetailPageProps {

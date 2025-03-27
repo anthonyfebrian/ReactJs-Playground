@@ -2,7 +2,6 @@ import { inject, injectable } from "inversify";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { HelloContainerKey } from "../../di/HelloContainerKey";
 import { GetHelloUseCase } from "../../domain/usecase/GetHelloUseCase";
-import { cloneClass } from "../../utils/CloneClass";
 import { HelloUiState } from "../uistate/HelloUiState";
 
 @injectable()
@@ -21,14 +20,13 @@ export class HelloViewModel {
     ) { }
 
     async onButtonClicked() {
-        const uiState = cloneClass(this._uiState.getValue());
-
         this.subscription?.unsubscribe()
 
         this. subscription = this.useCase.invoke().subscribe((data) => {
-            
-            uiState.title = data
-            this._uiState.next(uiState)
+            this._uiState.next({
+                ... this._uiState.getValue(),
+                title: data
+            })
         })
     }
 
