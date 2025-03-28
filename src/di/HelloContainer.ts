@@ -10,6 +10,7 @@ import { GetHelloUseCaseImpl } from "../domain/usecase/implementation/GetHelloUs
 import DetailViewModel from "../presentation/viewmodel/DetailViewModel";
 import { HelloViewModel } from "../presentation/viewmodel/HelloViewModel";
 import { HelloContainerKey } from "./HelloContainerKey";
+import { LoginViewModel } from "../presentation/viewmodel/LoginViewModel";
 
 
 
@@ -48,5 +49,6 @@ helloContainer.bind<Factory<DetailViewModel>>(DetailViewModel).toFactory((contex
         return new DetailViewModel(id, useCase);
     };
 });
+helloContainer.bind<LoginViewModel>(LoginViewModel).toSelf()
 
 export { helloContainer };
