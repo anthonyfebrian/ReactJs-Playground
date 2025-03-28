@@ -11,6 +11,8 @@ import DetailViewModel from "../presentation/viewmodel/DetailViewModel";
 import { HelloViewModel } from "../presentation/viewmodel/HelloViewModel";
 import { HelloContainerKey } from "./HelloContainerKey";
 import { LoginViewModel } from "../presentation/viewmodel/LoginViewModel";
+import { LoginUseCase } from "../domain/usecase/LoginUseCase";
+import { LoginUseCaseImpl } from "../domain/usecase/implementation/LoginUseCaseImpl";
 
 
 
@@ -36,6 +38,9 @@ helloContainer.bind<GetHelloUseCase>(HelloContainerKey.GET_HELLO_USE_CASE_ID)
 
 helloContainer.bind<GetDetailUseCase>(HelloContainerKey.GET_DETAIL_USE_CASE_ID)
     .to(GetDetailUseCaseImpl)
+
+helloContainer.bind<LoginUseCase>(HelloContainerKey.LOGIN_USE_CASE_ID)
+    .to(LoginUseCaseImpl)
 
 
 /**
